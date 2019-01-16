@@ -26,7 +26,11 @@ def handleQuery(query):
     if stripped:
         results = []
         for line in subprocess.check_output(['wmctrl', '-l', '-x']).splitlines():
-            win = Window(*[token.decode() for token in line.split(None,4)])
+            cols = line.split(None,4)
+            if len(cols) != 5:
+                # workaround for missing window name
+                cols.append(cols[2])
+            win = Window(*[token.decode() for token in cols])
             if win.desktop != "-1"  and stripped in win.wm_class.split('.')[0].lower():
                 results.append(Item(id="%s%s" % (__prettyname__, win.wm_class),
                                     icon=iconLookup(win.wm_class.split('.')[0]),
