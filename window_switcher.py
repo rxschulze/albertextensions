@@ -31,7 +31,7 @@ def handleQuery(query):
                 # workaround for missing window name
                 cols.append(cols[2])
             win = Window(*[token.decode() for token in cols])
-            if win.desktop != "-1"  and stripped in win.wm_class.lower():
+            if win.desktop != "-1"  and stripped in str(win.wm_class + win.wm_name).lower():
                 results.append(Item(id="%s%s" % (__prettyname__, win.wm_class),
                                     icon=iconLookup(win.wm_class.split('.')[0]),
                                     text="%s  - <i>Desktop %s</i>" % (win.wm_class.split('.')[-1].replace('-',' '), win.desktop),
